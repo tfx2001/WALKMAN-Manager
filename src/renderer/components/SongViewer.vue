@@ -8,21 +8,16 @@
             </a-breadcrumb>-->
             <a-layout-content :style="{background: 'white', padding: '24px'}">
                 <a-table
-                    :columns="columns"
                     :dataSource="dataSource"
                     size="small"
                     :pagination="false"
+                    :customRow="customRow"
                 >
-                    <span slot="contextMenu" slot-scope="record, text">
-                        <a-dropdown :trigger="['contextmenu']">
-                            <span style="user-select: none, ">{{text}}</span>
-                            <a-menu slot="overlay">
-                                <a-menu-item key="1">1st menu item</a-menu-item>
-                                <a-menu-item key="2">2nd menu item</a-menu-item>
-                                <a-menu-item key="3">3rd menu item</a-menu-item>
-                            </a-menu>
-                        </a-dropdown>
-                    </span>
+                    <a-table-column title="音乐标题" data-index="title" key="title"></a-table-column>
+                    <a-table-column title="歌手" data-index="singer" key="singer"></a-table-column>
+                    <a-table-column title="专辑" data-index="album" key="album"></a-table-column>
+                    <a-table-column title="时长" data-index="length" key="length"></a-table-column>
+                    <a-table-column title="大小" data-index="size" key="size"></a-table-column>
                 </a-table>
             </a-layout-content>
         </a-layout>
@@ -30,48 +25,10 @@
 </template>
 
 <script>
-const columns = [
-    {
-        title: "音乐标题",
-        key: "title",
-        dataIndex: "title",
-        scopedSlots: {
-            customRender: "contextMenu"
-        }
-    },
-    {
-        title: "歌手",
-        ket: "singer",
-        dataIndex: "singer",
-        scopedSlots: {
-            customRender: "contextMenu"
-        }
-    },
-    {
-        title: "专辑",
-        key: "album",
-        dataIndex: "album",
-        scopedSlots: {
-            customRender: "contextMenu"
-        }
-    },
-    {
-        title: "时长",
-        key: "length",
-        dataIndex: "length",
-        scopedSlots: {
-            customRender: "contextMenu"
-        }
-    },
-    {
-        title: "大小",
-        key: "size",
-        dataIndex: "size",
-        scopedSlots: {
-            customRender: "contextMenu"
-        }
-    }
-];
+// import Vue from 'vue'
+
+const { Menu, MenuItem } = this.$electron
+
 const dataSource = [
     {
         title: "Lemon",
@@ -82,17 +39,25 @@ const dataSource = [
         key: "1"
     }
 ];
+
 export default {
     name: "SongViewer",
     data() {
         return {
-            columns,
             dataSource
         };
     },
     methods: {
-        onContextMenu(event) {
-            this.$message.info(event);
+        customRow(record, index) {
+            const that = this;
+            return {
+                on: {
+                    contextmenu(event) {
+
+                        event, index;
+                    }
+                }
+            };
         }
     }
 };
