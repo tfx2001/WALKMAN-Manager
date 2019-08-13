@@ -39,43 +39,18 @@
 <script>
 // import { message } from "ant-design-vue";
 
-const dataSource = [
-  {
-    title: "Lemon1",
-    singer: "米津玄师",
-    album: "Lemon",
-    length: "3:03",
-    size: "0.5MB",
-    key: "1"
-  },
-  {
-    title: "Lemon2",
-    singer: "米津玄师",
-    album: "Lemon",
-    length: "3:03",
-    size: "0.5MB",
-    key: "2"
-  },
-  {
-    title: "Lemon3",
-    singer: "米津玄师",
-    album: "Lemon",
-    length: "3:03",
-    size: "0.5MB",
-    key: "3"
-  }
-];
-
 export default {
   name: "SongViewer",
   data() {
     return {
-      dataSource,
       selectedRowKeys: []
     };
   },
+  props: {
+    dataSource: Array
+  },
   methods: {
-    customRow(record, index) {
+    customRow(record) {
       const that = this;
       return {
         on: {
@@ -95,10 +70,8 @@ export default {
               new MenuItem({
                 label: "从本地磁盘中删除",
                 click() {
-                  that.dataSource.splice(index, 1);
-                  that.dataSource = that.dataSource.filter(object => {
-                    return that.selectedRowKeys.indexOf(object.key) == -1;
-                  });
+                  that.selectedRowKeys.push(record.key);
+                  that.$emit("deleteFiles", that.selectedRowKeys);
                   that.selectedRowKeys.splice(0, that.selectedRowKeys.length);
                 }
               })

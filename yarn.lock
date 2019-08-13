@@ -140,30 +140,6 @@
     got "^9.6.0"
     sumchecker "^3.0.0"
 
-"@fortawesome/fontawesome-common-types@^0.2.21":
-  version "0.2.21"
-  resolved "https://registry.npm.taobao.org/@fortawesome/fontawesome-common-types/download/@fortawesome/fontawesome-common-types-0.2.21.tgz#f1c26ae24761cca583de7cafd1273ab4c70a4d87"
-  integrity sha1-8cJq4kdhzKWD3nyv0Sc6tMcKTYc=
-
-"@fortawesome/fontawesome-svg-core@^1.2.21":
-  version "1.2.21"
-  resolved "https://registry.npm.taobao.org/@fortawesome/fontawesome-svg-core/download/@fortawesome/fontawesome-svg-core-1.2.21.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40fortawesome%2Ffontawesome-svg-core%2Fdownload%2F%40fortawesome%2Ffontawesome-svg-core-1.2.21.tgz#5b08a28d6e1ea198e002447b158abba00fd12122"
-  integrity sha1-WwiijW4eoZjgAkR7FYq7oA/RISI=
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.21"
-
-"@fortawesome/free-solid-svg-icons@^5.10.1":
-  version "5.10.1"
-  resolved "https://registry.npm.taobao.org/@fortawesome/free-solid-svg-icons/download/@fortawesome/free-solid-svg-icons-5.10.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40fortawesome%2Ffree-solid-svg-icons%2Fdownload%2F%40fortawesome%2Ffree-solid-svg-icons-5.10.1.tgz#535fd5429dbe99656de4f1a8ee42d9f8f5a7aef9"
-  integrity sha1-U1/VQp2+mWVt5PGo7kLZ+PWnrvk=
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.21"
-
-"@fortawesome/vue-fontawesome@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.npm.taobao.org/@fortawesome/vue-fontawesome/download/@fortawesome/vue-fontawesome-0.1.6.tgz#18a0f4263b90f65180fc927325ba01896276ea04"
-  integrity sha1-GKD0JjuQ9lGA/JJzJboBiWJ26gQ=
-
 "@nodelib/fs.scandir@2.1.1":
   version "2.1.1"
   resolved "https://registry.npm.taobao.org/@nodelib/fs.scandir/download/@nodelib/fs.scandir-2.1.1.tgz#7fa8fed654939e1a39753d286b48b4836d00e0eb"
