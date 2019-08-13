@@ -2,7 +2,7 @@
     <a-locale-provider :locale="locale">
         <div id="app">
             <a-layout :style="{top: 0, bottom: 0, left: 0, right: 0, position: 'fixed'}">
-                <a-layout-sider :style="{overflow: 'auto', marginBottom: '48px'}" collapsible>
+                <a-layout-sider :style="{overflow: 'auto', marginBottom: '48px'}" collapsible defaultCollapsed>
                     <side-menu @allMusicClicked="onAllMusicClicked" />
                 </a-layout-sider>
                 <a-layout>
@@ -42,12 +42,16 @@ export default {
         }
     },
     methods: {
+        // 所有歌曲被选中
         onAllMusicClicked() {
-            // this.currentComponent = comps[this.currentComponent.name == "Tip" ? 1 : 0];
+            
         }
     }
 };
 </script>
 
 <style>
+body {
+    user-select: none; /* 禁止选择文字 */
+}
 </style>

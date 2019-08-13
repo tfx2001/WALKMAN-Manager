@@ -6,7 +6,7 @@
     ],
     "eslint.alwaysShowStatus": true,
     "eslint.packageManager": "yarn",
-    "vetur.format.options.tabSize": 4,
+    "vetur.format.options.tabSize": 2,
     "workbench.colorCustomizations": {
         "titleBar.activeBackground": "#007fff",
         "titleBar.inactiveBackground": "#007fff99",

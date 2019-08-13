@@ -1,102 +1,129 @@
 <template>
-    <div>
-        <a-layout>
-            <a-layout-content :style="{background: 'white', padding: '24px'}">
-                <!-- TODO: 多选  -->
-                <a-table
-                    :dataSource="dataSource"
-                    size="small"
-                    :pagination="false"
-                    :customRow="customRow"
-                >
-                    <a-table-column title="音乐标题" data-index="title" key="title">
-                        <template slot-scope="title">
-                            <span :title="title">{{title}}</span>
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="歌手" data-index="singer" key="singer">
-                        <template slot-scope="singer">
-                            <span :title="singer">{{singer}}</span>
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="专辑" data-index="album" key="album">
-                        <template slot-scope="album">
-                            <span :title="album">{{album}}</span>
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="时长" data-index="length" key="length">
-                        <template slot-scope="length">
-                            <span :title="length">{{length}}</span>
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="大小" data-index="size" key="size">
-                        <template slot-scope="size">
-                            <span :title="size">{{size}}</span>
-                        </template>
-                    </a-table-column>
-                </a-table>
-            </a-layout-content>
-        </a-layout>
-    </div>
+  <div :style="{background: 'white', padding: '24px'}">
+    <a-table
+      :dataSource="dataSource"
+      size="small"
+      :pagination="false"
+      :customRow="customRow"
+      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+    >
+      <a-table-column title="音乐标题" data-index="title" key="title">
+        <template slot-scope="title">
+          <span :title="title">{{title}}</span>
+        </template>
+      </a-table-column>
+      <a-table-column title="歌手" data-index="singer" key="singer">
+        <template slot-scope="singer">
+          <span :title="singer">{{singer}}</span>
+        </template>
+      </a-table-column>
+      <a-table-column title="专辑" data-index="album" key="album">
+        <template slot-scope="album">
+          <span :title="album">{{album}}</span>
+        </template>
+      </a-table-column>
+      <a-table-column title="时长" data-index="length" key="length">
+        <template slot-scope="length">
+          <span :title="length">{{length}}</span>
+        </template>
+      </a-table-column>
+      <a-table-column title="大小" data-index="size" key="size">
+        <template slot-scope="size">
+          <span :title="size">{{size}}</span>
+        </template>
+      </a-table-column>
+    </a-table>
+  </div>
 </template>
 
 <script>
-import { message } from "ant-design-vue";
+// import { message } from "ant-design-vue";
 
 const dataSource = [
-    {
-        title: "Lemon",
-        singer: "米津玄师",
-        album: "Lemon",
-        length: "3:03",
-        size: "0.5MB",
-        key: "1"
-    }
+  {
+    title: "Lemon1",
+    singer: "米津玄师",
+    album: "Lemon",
+    length: "3:03",
+    size: "0.5MB",
+    key: "1"
+  },
+  {
+    title: "Lemon2",
+    singer: "米津玄师",
+    album: "Lemon",
+    length: "3:03",
+    size: "0.5MB",
+    key: "2"
+  },
+  {
+    title: "Lemon3",
+    singer: "米津玄师",
+    album: "Lemon",
+    length: "3:03",
+    size: "0.5MB",
+    key: "3"
+  }
 ];
 
 export default {
-    name: "SongViewer",
-    data() {
-        return {
-            dataSource
-        };
-    },
-    methods: {
-        customRow(record, index) {
-            const that = this;
-            return {
-                on: {
-                    contextmenu() {
-                        const { Menu, MenuItem } = that.$electron.remote;
+  name: "SongViewer",
+  data() {
+    return {
+      dataSource,
+      selectedRowKeys: []
+    };
+  },
+  methods: {
+    customRow(record, index) {
+      const that = this;
+      return {
+        on: {
+          contextmenu() {
+            const { Menu, MenuItem } = that.$electron.remote;
+            const menu = new Menu();
 
-                        const menu = new Menu();
-                        menu.append(
-                            new MenuItem({
-                                label: "从本地磁盘中删除",
-                                click() {
-                                    message.info(`歌曲"${record.title}"已删除`);
-                                    that.dataSource.splice(index, 1);
-                                }
-                            })
-                        );
-                        menu.popup();
-                    }
+            that.selectedRowKeys.push(record.key);
+
+            menu.on("menu-will-close", () => {
+              that.selectedRowKeys.splice(
+                that.selectedRowKeys.indexOf(record.key),
+                1
+              );
+            });
+            menu.append(
+              new MenuItem({
+                label: "从本地磁盘中删除",
+                click() {
+                  that.dataSource.splice(index, 1);
+                  that.dataSource = that.dataSource.filter(object => {
+                    return that.selectedRowKeys.indexOf(object.key) == -1;
+                  });
+                  that.selectedRowKeys.splice(0, that.selectedRowKeys.length);
                 }
-            };
+              })
+            );
+            menu.popup();
+          }
         }
+      };
+    },
+    onSelectChange(selectedRowKeys) {
+      this.selectedRowKeys = selectedRowKeys;
     }
+  }
 };
 </script>
 
 <style>
 td {
-    width: 100%;
-    word-break: keep-all;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  width: 100%;
+  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 table {
-    table-layout: fixed;
+  table-layout: fixed;
 }
 </style>
