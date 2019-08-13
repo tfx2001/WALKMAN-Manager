@@ -1,7 +1,7 @@
 ﻿<template>
     <a-alert
         message="提示"
-        :description="description"
+        :description="this.description"
         type="info"
         showIcon
     />

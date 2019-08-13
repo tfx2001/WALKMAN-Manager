@@ -3,7 +3,7 @@
         <div id="app">
             <a-layout :style="{top: 0, bottom: 0, left: 0, right: 0, position: 'fixed'}">
                 <a-layout-sider :style="{overflow: 'auto', marginBottom: '48px'}" collapsible>
-                    <side-menu />
+                    <side-menu @allMusicClicked="onAllMusicClicked" />
                 </a-layout-sider>
                 <a-layout>
                     <a-layout-content :style="{padding: '16px 16px 0px 16px'}">
@@ -26,15 +26,9 @@ const comps = [Tip, SongViewer];
 export default {
     name: "walkman-manager",
     components: { SideMenu },
-    methods: {
-        buttonClick: function() {
-            console.log("Clicked");
-        }
-    },
     data() {
         return {
             locale: zhCN,
-            comps: comps,
             currentComponent: comps[1]
         };
     },
@@ -45,6 +39,11 @@ export default {
             } else {
                 return {};
             }
+        }
+    },
+    methods: {
+        onAllMusicClicked() {
+            // this.currentComponent = comps[this.currentComponent.name == "Tip" ? 1 : 0];
         }
     }
 };

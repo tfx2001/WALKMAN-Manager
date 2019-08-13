@@ -9,9 +9,7 @@
                     <music-icon />
                     <span>歌曲</span>
                 </span>
-                <a-menu-item>
-                    <span>所有歌曲</span>
-                </a-menu-item>
+                <a-menu-item :disabled="!musicFiles.length" @click="$emit('allMusicClicked')">所有歌曲</a-menu-item>
             </a-sub-menu>
             <a-sub-menu>
                 <span slot="title">
@@ -43,15 +41,16 @@ export default {
     props: {
         playList: {
             type: Array,
-            default: () => {
+            default() {
+                return [];
+            }
+        },
+        musicFiles: {
+            type: Array,
+            default() {
                 return [];
             }
         }
-    },
-    data() {
-        return {
-            test: 1
-        };
     }
 };
 </script>
