@@ -49,7 +49,7 @@ export default {
       musicFiles: [
         {
           title: "Lemon1",
-          singer: "米津玄师",
+          singer: "米津玄师1",
           album: "Lemon",
           length: "3:03",
           size: "0.5MB",
@@ -57,7 +57,7 @@ export default {
         },
         {
           title: "Lemon2",
-          singer: "米津玄师",
+          singer: "米津玄师1",
           album: "Lemon",
           length: "3:03",
           size: "0.5MB",
@@ -65,7 +65,55 @@ export default {
         },
         {
           title: "Lemon3",
-          singer: "米津玄师",
+          singer: "米津玄师1",
+          album: "Lemon",
+          length: "3:03",
+          size: "0.5MB",
+          key: "3"
+        },
+        {
+          title: "Lemon1",
+          singer: "米津玄师2",
+          album: "Lemon",
+          length: "3:03",
+          size: "0.5MB",
+          key: "3"
+        },
+        {
+          title: "Lemon2",
+          singer: "米津玄师2",
+          album: "Lemon",
+          length: "3:03",
+          size: "0.5MB",
+          key: "3"
+        },
+        {
+          title: "Lemon3",
+          singer: "米津玄师2",
+          album: "Lemon",
+          length: "3:03",
+          size: "0.5MB",
+          key: "3"
+        },
+        {
+          title: "Lemon1",
+          singer: "米津玄师3",
+          album: "Lemon",
+          length: "3:03",
+          size: "0.5MB",
+          key: "3"
+        },
+        {
+          title: "Lemon2",
+          singer: "米津玄师3",
+          album: "Lemon",
+          length: "3:03",
+          size: "0.5MB",
+          key: "3"
+        },
+        {
+          title: "Lemon3",
+          singer: "米津玄师3",
           album: "Lemon",
           length: "3:03",
           size: "0.5MB",
