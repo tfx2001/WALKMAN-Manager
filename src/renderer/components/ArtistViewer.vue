@@ -1,14 +1,14 @@
 <template>
   <a-layout :style="{background: 'white'}">
-    <a-layout-sider theme="light" :style="{padding: '24px 0'}">
+    <a-layout-sider theme="light" :style="{padding: '24px 0', overflow: 'auto'}">
       <a-menu mode="inline" :style="{height: '100%'}" @click="onClick">
-        <a-menu-item v-for="singer in singers" :key="singer">
-          <span>{{ singer }}</span>
+        <a-menu-item v-for="artist in artists" :key="artist">
+          <span>{{ artist }}</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout-content>
-      <song-viewer :dataSource="this.singerSongs" @deleteFiles="onDeleteFiles" />
+      <song-viewer :dataSource="this.artistSongs" @deleteFiles="onDeleteFiles" />
     </a-layout-content>
   </a-layout>
 </template>
@@ -17,13 +17,13 @@
 import SongViewer from "./SongViewer";
 
 export default {
-  name: "SingerViewer",
+  name: "ArtistViewer",
   components: {
     SongViewer
   },
   data() {
     return {
-      selectedSinger: ""
+      selectedArtist: ""
     };
   },
   props: {
@@ -35,24 +35,27 @@ export default {
     }
   },
   computed: {
-    singers() {
+    artists() {
+      console.time("artist");
       let result = new Set();
-      for (var i of this.dataSource) {
-        result.add(i.singer);
+      for (let i of this.dataSource) {
+        result.add(i.artist);
       }
-      return Array.from(result);
+      console.timeEnd("artist");
+      return Array.from(result).sort((a, b) => {
+        return a.localeCompare(b);
+      });
     },
-    singerSongs() {
+    artistSongs() {
       let that = this;
-      console.log("called");
       return this.dataSource.filter(obj => {
-        return obj.singer == that.selectedSinger;
+        return obj.artist == that.selectedArtist;
       });
     }
   },
   methods: {
     onClick(obj) {
-      this.selectedSinger = obj.key;
+      this.selectedArtist = obj.key;
     },
     onDeleteFiles(selectedKeys) {
       this.$emit("deleteFiles", selectedKeys);

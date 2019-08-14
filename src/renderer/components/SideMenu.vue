@@ -1,7 +1,7 @@
 <template>
   <div id="side-menu">
     <div :style="{margin: '16px'}">
-      <button-open-folder :collapsed="$parent.sCollapsed">打开文件夹</button-open-folder>
+      <button-open-folder :collapsed="$parent.sCollapsed" @click="onOpenFolderButtonClick">打开文件夹</button-open-folder>
     </div>
     <a-menu mode="inline" theme="dark">
       <a-sub-menu>
@@ -17,7 +17,7 @@
           <album-icon />
           <span>专辑</span>
         </a-menu-item>
-        <a-menu-item :disabled="!isOpenFoldered" @click="$emit('singerClicked')">
+        <a-menu-item :disabled="!isOpenFoldered" @click="$emit('artistClicked')">
           <singer-icon />
           <span>歌手</span>
         </a-menu-item>
@@ -66,6 +66,11 @@ export default {
       }
     },
     isOpenFoldered: Boolean
+  },
+  methods: {
+    onOpenFolderButtonClick() {
+      this.$emit("openFolderButtonClick");
+    }
   }
 };
 </script>

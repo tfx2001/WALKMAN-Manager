@@ -1,4 +1,4 @@
-import { Button, Col, Row, Menu, Icon, Layout, LocaleProvider, Alert, Table, Dropdown } from 'ant-design-vue'
+import { Button, Col, Row, Menu, Icon, Layout, LocaleProvider, Alert, Table, Dropdown, Modal, Progress } from 'ant-design-vue'
 import Vue from 'vue'
 
 import App from './App'
@@ -13,6 +13,8 @@ Vue.use(LocaleProvider)
 Vue.use(Alert)
 Vue.use(Table)
 Vue.use(Dropdown)
+Vue.use(Modal)
+Vue.use(Progress)
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.config.productionTip = false

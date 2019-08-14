@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow, Menu, MenuItem } from 'electron'
+import { app, BrowserWindow, Menu } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -14,13 +14,6 @@ let mainWindow
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
-
-const menu = new Menu()
-menu.append(new MenuItem({
-  label: '添加到播放列表', click() {
-
-  }
-}))
 
 function createWindow() {
   /**
@@ -42,6 +35,8 @@ function createWindow() {
   mainWindow.once('ready-to-show', () => {
     mainWindow.show()
   })
+
+  Menu.setApplicationMenu(null)
 }
 
 app.on('ready', createWindow)

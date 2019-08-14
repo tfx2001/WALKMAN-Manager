@@ -3,7 +3,6 @@
     <a-table
       :dataSource="dataSource"
       size="small"
-      :pagination="false"
       :customRow="customRow"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
     >
@@ -12,9 +11,9 @@
           <span :title="title">{{title}}</span>
         </template>
       </a-table-column>
-      <a-table-column title="歌手" data-index="singer" key="singer">
-        <template slot-scope="singer">
-          <span :title="singer">{{singer}}</span>
+      <a-table-column title="歌手" data-index="artist" key="artist">
+        <template slot-scope="artist">
+          <span :title="artist">{{artist}}</span>
         </template>
       </a-table-column>
       <a-table-column title="专辑" data-index="album" key="album">
@@ -22,14 +21,9 @@
           <span :title="album">{{album}}</span>
         </template>
       </a-table-column>
-      <a-table-column title="时长" data-index="length" key="length">
-        <template slot-scope="length">
-          <span :title="length">{{length}}</span>
-        </template>
-      </a-table-column>
       <a-table-column title="大小" data-index="size" key="size">
         <template slot-scope="size">
-          <span :title="size">{{size}}</span>
+          <span :title="size">{{(size / 1048576).toFixed(1)}}MB</span>
         </template>
       </a-table-column>
     </a-table>
@@ -77,6 +71,11 @@ export default {
               })
             );
             menu.popup();
+          }
+        },
+        props: {
+          style: {
+            cursor: "pointer"
           }
         }
       };
