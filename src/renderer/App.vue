@@ -15,7 +15,7 @@
           />
         </a-layout-sider>
         <a-layout>
-          <a-layout-content :style="{padding: '16px 16px 0px 16px'}">
+          <a-layout-content :style="{padding: '16px'}">
             <component
               :is="this.currentComponent"
               v-bind="currentProp"
@@ -77,7 +77,7 @@ export default {
           album: "Lemon",
           length: "3:03",
           size: "0.5MB",
-          key: "3"
+          key: "4"
         },
         {
           title: "Lemon2",
@@ -85,7 +85,7 @@ export default {
           album: "Lemon",
           length: "3:03",
           size: "0.5MB",
-          key: "3"
+          key: "5"
         },
         {
           title: "Lemon3",
@@ -93,7 +93,7 @@ export default {
           album: "Lemon",
           length: "3:03",
           size: "0.5MB",
-          key: "3"
+          key: "6"
         },
         {
           title: "Lemon1",
@@ -101,7 +101,7 @@ export default {
           album: "Lemon",
           length: "3:03",
           size: "0.5MB",
-          key: "3"
+          key: "7"
         },
         {
           title: "Lemon2",
@@ -109,7 +109,7 @@ export default {
           album: "Lemon",
           length: "3:03",
           size: "0.5MB",
-          key: "3"
+          key: "8"
         },
         {
           title: "Lemon3",
@@ -117,7 +117,7 @@ export default {
           album: "Lemon",
           length: "3:03",
           size: "0.5MB",
-          key: "3"
+          key: "9"
         }
       ]
     };
@@ -132,7 +132,6 @@ export default {
     }
   },
   methods: {
-    // 所有歌曲被选中
     onMusicClicked() {
       this.currentComponent = comps[1];
     },

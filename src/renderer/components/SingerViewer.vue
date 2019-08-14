@@ -1,5 +1,5 @@
 <template>
-  <a-layout>
+  <a-layout :style="{background: 'white'}">
     <a-layout-sider theme="light" :style="{padding: '24px 0'}">
       <a-menu mode="inline" :style="{height: '100%'}" @click="onClick">
         <a-menu-item v-for="singer in singers" :key="singer">
