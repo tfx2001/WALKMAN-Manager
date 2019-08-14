@@ -1,3 +1,5 @@
 language: node_js
 os: windows
 script: yarn build
+node_js:
+  - latest
