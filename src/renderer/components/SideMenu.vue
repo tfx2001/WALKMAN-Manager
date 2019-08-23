@@ -30,8 +30,9 @@
         <a-menu-item v-if="!playList.length" disabled>无</a-menu-item>
         <a-menu-item
           v-else
-          v-for="[index, item] in playList.entries()"
-          :key="playList.indexOf(item)"
+          v-for="item in playList"
+          :key="item.dir"
+          @click="$emit('onPlayListItemClicked', $event.key)"
         >{{ item.name }}</a-menu-item>
       </a-sub-menu>
     </a-menu>

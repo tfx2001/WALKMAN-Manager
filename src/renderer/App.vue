@@ -8,10 +8,12 @@
       >
         <side-menu
           :isOpenFoldered="true"
+          :playList="playListFiles"
           @musicClicked="onMusicClicked"
           @albumClicked="onAlbumClicked"
           @artistClicked="onArtistClicked"
           @openFolderButtonClick="onOpenFolderButtonClick"
+          @onPlayListItemClicked="onPlayListItemClicked"
         />
       </a-layout-sider>
       <a-layout>
@@ -25,7 +27,7 @@
         </a-layout-content>
       </a-layout>
       <a-modal
-        v-model="visible"
+        v-model="modalVisiable"
         title="正在导入"
         :footer="null"
         :closable="false"
@@ -51,14 +53,25 @@ import path from "path";
 
 const comps = [Tip, SongViewer, ArtistViewer, AlbumViewer, PlayListViewer];
 
-function recursiveSearch(currentPath) {
-  let result = [];
+function recursiveSearchFiles(currentPath) {
+  let result = {
+    musicFiles: [],
+    playListFiles: []
+  };
   for (var file of fs.readdirSync(currentPath)) {
     if (fs.statSync(`${currentPath}\\${file}`).isDirectory()) {
-      result = result.concat(recursiveSearch(`${currentPath}\\${file}`));
+      let tempResult = recursiveSearchFiles(`${currentPath}\\${file}`);
+      result.musicFiles = result.musicFiles.concat(tempResult.musicFiles);
+      result.playListFiles = result.playListFiles.concat(
+        tempResult.playListFiles
+      );
     } else {
-      if ([".mp3", ".ape", ".flac"].includes(path.extname(file))) {
-        result.push(path.normalize(`${currentPath}\\${file}`));
+      if (
+        [".mp3", ".ape", ".flac"].includes(path.extname(file).toLowerCase())
+      ) {
+        result.musicFiles.push(path.normalize(`${currentPath}\\${file}`));
+      } else if ([".m3u8"].includes(path.extname(file).toLowerCase())) {
+        result.playListFiles.push(path.normalize(`${currentPath}\\${file}`));
       }
     }
   }
@@ -73,7 +86,9 @@ export default {
       locale: zhCN,
       currentComponent: comps[1],
       musicFiles: [],
-      visible: false,
+      playListFiles: [],
+      currentPlayListFile: "",
+      modalVisiable: false,
       importPercent: 0
     };
   },
@@ -81,6 +96,8 @@ export default {
     currentProp: function() {
       if (this.currentComponent.name == "Tip") {
         return { description: "请先打开一个文件夹。" };
+      } else if (this.currentComponent.name == "PlayListViewer") {
+        return { currentPlayListFile: this.currentPlayListFile };
       } else {
         return { dataSource: this.musicFiles };
       }
@@ -110,12 +127,12 @@ export default {
       });
 
       if (initDir) {
-        this.visible = true;
-        let musicFileDirs = recursiveSearch(initDir[0]);
+        this.modalVisiable = true;
+        let { musicFiles, playListFiles } = recursiveSearchFiles(initDir[0]);
         let index = 0,
-          totalImport = musicFileDirs.length;
+          totalImport = musicFiles.length;
         let sortedMusicFiles = [];
-        for (const dir of musicFileDirs) {
+        for (const dir of musicFiles) {
           let metadata = await mm.parseFile(dir);
           sortedMusicFiles.push({
             title: metadata.common.title,
@@ -134,8 +151,18 @@ export default {
             return true;
           }
         });
-        this.visible = false;
+        this.playListFiles = playListFiles.map(value => {
+          return {
+            name: path.basename(value, ".m3u8"),
+            dir: value
+          };
+        });
+        this.modalVisiable = false;
       }
+    },
+    onPlayListItemClicked(key) {
+      this.currentPlayListFile = key;
+      this.currentComponent = comps[4];
     }
   }
 };

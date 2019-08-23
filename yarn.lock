@@ -5516,6 +5516,16 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+m3u8-reader@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npm.taobao.org/m3u8-reader/download/m3u8-reader-1.1.0.tgz#e79e5783c8aa9e058371d6fc50a33a9f2847d9d5"
+  integrity sha1-555Xg8iqngWDcdb8UKM6nyhH2dU=
+
+m3u8-writer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npm.taobao.org/m3u8-writer/download/m3u8-writer-1.0.0.tgz#e117b9101ebabbee673500b011d77c6b7c2e1c34"
+  integrity sha1-4Re5EB66u+5nNQCwEdd8a3wuHDQ=
+
 make-dir@^1.0.0:
   version "1.3.0"
   resolved "https://registry.npm.taobao.org/make-dir/download/make-dir-1.3.0.tgz#79c1033b80515bd6d24ec9933e860ca75ee27f0c"

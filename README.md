@@ -1,7 +1,5 @@
 # walkman-manager
 
-[![Build Status](https://travis-ci.org/tfx2001/WALKMAN-Manager.svg?branch=master)](https://travis-ci.org/tfx2001/WALKMAN-Manager)
-
 > A program for managing walkman.
 
 #### Build Setup
