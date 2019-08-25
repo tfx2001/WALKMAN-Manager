@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
 import SideMenu from "./components/SideMenu.vue";
 import SongViewer from "./components/SongViewer.vue";
@@ -85,9 +86,6 @@ export default {
     return {
       locale: zhCN,
       currentComponent: comps[1],
-      musicFiles: [],
-      playListFiles: [],
-      currentPlayListFile: "",
       modalVisiable: false,
       importPercent: 0
     };
@@ -101,7 +99,8 @@ export default {
       } else {
         return { dataSource: this.musicFiles };
       }
-    }
+    },
+    ...mapState(["musicFiles", "playListFiles", "currentPlayListFile"])
   },
   methods: {
     onMusicClicked() {
@@ -113,10 +112,9 @@ export default {
     onAlbumClicked() {
       this.currentComponent = comps[3];
     },
-    onDeleteFiles(deleteKeys) {
-      this.musicFiles = this.musicFiles.filter(obj => {
-        return deleteKeys.indexOf(obj.key) == -1;
-      });
+    onPlayListItemClicked(key) {
+      this.$store.commit("updateCurrentPlayListFile", key);
+      this.currentComponent = comps[4];
     },
     async onOpenFolderButtonClick() {
       const dialog = this.$electron.remote.dialog;
@@ -144,25 +142,27 @@ export default {
           index += 1;
           this.importPercent = Math.ceil((index / totalImport) * 100);
         }
-        this.musicFiles = sortedMusicFiles.sort((a, b) => {
-          if (a.title) {
-            return a.title.localeCompare(b.title);
-          } else {
-            return true;
-          }
-        });
-        this.playListFiles = playListFiles.map(value => {
-          return {
-            name: path.basename(value, ".m3u8"),
-            dir: value
-          };
-        });
+        this.$store.commit(
+          "updateMusicFiles",
+          sortedMusicFiles.sort((a, b) => {
+            if (a.title) {
+              return a.title.localeCompare(b.title);
+            } else {
+              return true;
+            }
+          })
+        );
+        this.$store.commit(
+          "updatePlayListFiles",
+          playListFiles.map(value => {
+            return {
+              name: path.basename(value, ".m3u8"),
+              dir: value
+            };
+          })
+        );
         this.modalVisiable = false;
       }
-    },
-    onPlayListItemClicked(key) {
-      this.currentPlayListFile = key;
-      this.currentComponent = comps[4];
     }
   }
 };

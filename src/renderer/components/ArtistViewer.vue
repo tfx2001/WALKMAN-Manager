@@ -8,7 +8,7 @@
       </a-menu>
     </a-layout-sider>
     <a-layout-content>
-      <song-viewer :dataSource="this.artistSongs" @deleteFiles="onDeleteFiles" />
+      <song-viewer :dataSource="artistSongs"/>
     </a-layout-content>
   </a-layout>
 </template>
@@ -26,19 +26,11 @@ export default {
       selectedArtist: ""
     };
   },
-  props: {
-    dataSource: {
-      type: Array,
-      default() {
-        return [];
-      }
-    }
-  },
   computed: {
     artists() {
       console.time("artist");
       let result = new Set();
-      for (let i of this.dataSource) {
+      for (let i of this.$store.musicFiles) {
         result.add(i.artist);
       }
       console.timeEnd("artist");
@@ -48,17 +40,14 @@ export default {
     },
     artistSongs() {
       let that = this;
-      return this.dataSource.filter(obj => {
-        return obj.artist == that.selectedArtist;
+      return this.$store.musicFiles.filter(val => {
+        return val.artist == that.selectedArtist;
       });
     }
   },
   methods: {
-    onClick(obj) {
-      this.selectedArtist = obj.key;
-    },
-    onDeleteFiles(selectedKeys) {
-      this.$emit("deleteFiles", selectedKeys);
+    onClick(val) {
+      this.selectedArtist = val.key;
     }
   }
 };

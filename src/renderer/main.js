@@ -1,5 +1,19 @@
-import { Button, Col, Row, Menu, Icon, Layout, LocaleProvider, Alert, Table, Dropdown, Modal, Progress } from 'ant-design-vue'
+import {
+  Button,
+  Col,
+  Row,
+  Menu,
+  Icon,
+  Layout,
+  LocaleProvider,
+  Alert,
+  Table,
+  Dropdown,
+  Modal,
+  Progress
+} from 'ant-design-vue'
 import Vue from 'vue'
+import Vuex from 'vuex'
 
 import App from './App'
 
@@ -15,12 +29,40 @@ Vue.use(Table)
 Vue.use(Dropdown)
 Vue.use(Modal)
 Vue.use(Progress)
+Vue.use(Vuex)
 
-if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
+if (!process.env.IS_WEB)
+  Vue.use(require('vue-electron'))
 Vue.config.productionTip = false
 
-/* eslint-disable no-new */
+const store = new Vuex.Store({
+  state: {
+    musicFiles: [],
+    playListFiles: [],
+    currentPlayListFile: ""
+  },
+  mutations: {
+    updateMusicFiles(state, musicFiles) {
+      state.musicFiles = musicFiles;
+    },
+    deleteMusicFiles(state, deleteKeys) {
+      state.musicFiles = state.musicFiles.filter(val => {
+        return deleteKeys.indexOf(val.key) == -1;
+      })
+    },
+    updatePlayListFiles(state, playListFiles) {
+      state.playListFiles = playListFiles
+    },
+    updateCurrentPlayListFile(state, currentPlayListFile) {
+      state.currentPlayListFile = currentPlayListFile
+    }
+  }
+})
+
 new Vue({
-  components: { App },
-  template: '<App/>'
+  components: {
+    App
+  },
+  template: '<App/>',
+  store
 }).$mount('#app')

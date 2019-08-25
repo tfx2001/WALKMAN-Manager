@@ -65,7 +65,7 @@ export default {
                 label: "从本地磁盘中删除",
                 click() {
                   that.selectedRowKeys.push(record.key);
-                  that.$emit("deleteFiles", that.selectedRowKeys);
+                  that.$store.commit("deleteFiles", that.selectedRowKeys);
                   that.selectedRowKeys.splice(0, that.selectedRowKeys.length);
                 }
               })

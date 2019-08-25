@@ -33,7 +33,8 @@
     "m3u8-writer": "^1.0.0",
     "music-metadata": "^4.3.0",
     "vue": "^2.5.16",
-    "vue-electron": "^1.0.6"
+    "vue-electron": "^1.0.6",
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
     "ajv": "^6.5.0",
