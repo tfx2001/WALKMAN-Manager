@@ -8,13 +8,14 @@
       </a-menu>
     </a-layout-sider>
     <a-layout-content>
-      <song-viewer :dataSource="artistSongs"/>
+      <song-viewer :dataSource="artistSongs" />
     </a-layout-content>
   </a-layout>
 </template>
 
 <script>
 import SongViewer from "./SongViewer";
+import { mapState } from "vuex";
 
 export default {
   name: "ArtistViewer",
@@ -28,22 +29,21 @@ export default {
   },
   computed: {
     artists() {
-      console.time("artist");
       let result = new Set();
-      for (let i of this.$store.musicFiles) {
+      for (const i of this.musicFiles) {
         result.add(i.artist);
       }
-      console.timeEnd("artist");
       return Array.from(result).sort((a, b) => {
         return a.localeCompare(b);
       });
     },
     artistSongs() {
       let that = this;
-      return this.$store.musicFiles.filter(val => {
+      return this.musicFiles.filter(val => {
         return val.artist == that.selectedArtist;
       });
-    }
+    },
+    ...mapState(["musicFiles"])
   },
   methods: {
     onClick(val) {

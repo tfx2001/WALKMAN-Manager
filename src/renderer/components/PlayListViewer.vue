@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import SongViewer from "./SongViewer.vue";
 import fs from "fs";
 import path from "path";
@@ -18,8 +19,8 @@ export default {
       playListSongs: []
     };
   },
-  props: {
-    currentPlayListFile: String
+  computed: {
+    ...mapState(["currentPlayListFile"])
   },
   watch: {
     currentPlayListFile: {

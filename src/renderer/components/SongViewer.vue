@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 // import { message } from "ant-design-vue";
 
 export default {
@@ -43,23 +44,33 @@ export default {
   props: {
     dataSource: Array
   },
+  computed: mapState(["playListFiles"]),
   methods: {
     customRow(record) {
       const that = this;
       return {
         on: {
           contextmenu() {
+            // const { Menu, MenuItem } = require("electron");
             const { Menu, MenuItem } = that.$electron.remote;
             const menu = new Menu();
+            const playListMenu = new Menu();
 
             that.selectedRowKeys.push(record.key);
 
-            menu.on("menu-will-close", () => {
-              that.selectedRowKeys.splice(
-                that.selectedRowKeys.indexOf(record.key),
-                1
+            for (const i of that.playListFiles) {
+              playListMenu.append(
+                new MenuItem({
+                  label: i.name,
+                  click() {
+                    const m3u8Write = require("m3u8-write");
+                    // TODO: 不能用m3u8-write库
+                    m3u8Write([{ EXTINF: `${record.length},${record.title}` }, record.key]);
+                  }
+                })
               );
-            });
+            }
+
             menu.append(
               new MenuItem({
                 label: "从本地磁盘中删除",
@@ -70,6 +81,20 @@ export default {
                 }
               })
             );
+            menu.append(
+              new MenuItem({
+                label: "添加到播放列表",
+                submenu: playListMenu
+              })
+            );
+
+            menu.on("menu-will-close", () => {
+              that.selectedRowKeys.splice(
+                that.selectedRowKeys.indexOf(record.key),
+                1
+              );
+            });
+
             menu.popup();
           }
         },

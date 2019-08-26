@@ -8,7 +8,6 @@
       >
         <side-menu
           :isOpenFoldered="true"
-          :playList="playListFiles"
           @musicClicked="onMusicClicked"
           @albumClicked="onAlbumClicked"
           @artistClicked="onArtistClicked"
@@ -21,7 +20,6 @@
           <component
             :is="this.currentComponent"
             v-bind="currentProp"
-            @deleteFiles="onDeleteFiles"
             :style="{height: '-webkit-fill-available'}"
           ></component>
         </a-layout-content>
@@ -94,10 +92,10 @@ export default {
     currentProp: function() {
       if (this.currentComponent.name == "Tip") {
         return { description: "请先打开一个文件夹。" };
-      } else if (this.currentComponent.name == "PlayListViewer") {
-        return { currentPlayListFile: this.currentPlayListFile };
-      } else {
+      } else if (this.currentComponent.name == "SongViewer") {
         return { dataSource: this.musicFiles };
+      } else {
+        return {};
       }
     },
     ...mapState(["musicFiles", "playListFiles", "currentPlayListFile"])
@@ -137,6 +135,7 @@ export default {
             artist: metadata.common.artist,
             album: metadata.common.album,
             size: fs.statSync(dir).size,
+            length: Math.floor(metadata.format.duration),
             key: dir
           });
           index += 1;

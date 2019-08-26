@@ -27,10 +27,10 @@
           <play-list-fill-icon />
           <span>播放列表</span>
         </span>
-        <a-menu-item v-if="!playList.length" disabled>无</a-menu-item>
+        <a-menu-item v-if="!playListFiles.length" disabled>无</a-menu-item>
         <a-menu-item
           v-else
-          v-for="item in playList"
+          v-for="item in playListFiles"
           :key="item.dir"
           @click="$emit('onPlayListItemClicked', $event.key)"
         >{{ item.name }}</a-menu-item>
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
 import ButtonOpenFolder from "./SideMenu/ButtonOpenFolder";
 import {
   PlayListFillIcon,
@@ -60,19 +61,14 @@ export default {
     AlbumIcon
   },
   props: {
-    playList: {
-      type: Array,
-      default() {
-        return [];
-      }
-    },
     isOpenFoldered: Boolean
   },
   methods: {
     onOpenFolderButtonClick() {
       this.$emit("openFolderButtonClick");
     }
-  }
+  },
+  computed: mapState(["playListFiles"])
 };
 </script>
 
