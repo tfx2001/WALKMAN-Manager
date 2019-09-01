@@ -1,6 +1,9 @@
 <template>
   <div>
-    <song-viewer :dataSource="playListSongs"></song-viewer>
+    <song-viewer
+      v-model="playListSongs"
+      :playList="true"
+    ></song-viewer>
   </div>
 </template>
 

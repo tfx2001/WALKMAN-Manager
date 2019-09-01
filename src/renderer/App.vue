@@ -128,15 +128,15 @@ export default {
         let index = 0,
           totalImport = musicFiles.length;
         let sortedMusicFiles = [];
-        for (const dir of musicFiles) {
-          let metadata = await mm.parseFile(dir);
+        for (const file of musicFiles) {
+          let metadata = await mm.parseFile(file);
           sortedMusicFiles.push({
             title: metadata.common.title,
             artist: metadata.common.artist,
             album: metadata.common.album,
-            size: fs.statSync(dir).size,
+            size: fs.statSync(file).size,
             length: Math.floor(metadata.format.duration),
-            key: dir
+            key: file
           });
           index += 1;
           this.importPercent = Math.ceil((index / totalImport) * 100);
@@ -156,7 +156,7 @@ export default {
           playListFiles.map(value => {
             return {
               name: path.basename(value, ".m3u8"),
-              dir: value
+              file: value
             };
           })
         );

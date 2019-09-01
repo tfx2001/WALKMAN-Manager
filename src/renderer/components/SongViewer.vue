@@ -32,67 +32,124 @@
 
 <script>
 import { mapState } from "vuex";
-// import { message } from "ant-design-vue";
+import {
+  appendToPlayList,
+  removeFromPlayList
+} from "./SongViewer/PlayListEditor";
 
 export default {
   name: "SongViewer",
   data() {
     return {
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      selectedRecords: []
     };
   },
-  props: {
-    dataSource: Array
+  model: {
+    prop: "dataSource",
+    event: "change"
   },
-  computed: mapState(["playListFiles"]),
+  props: {
+    dataSource: Array,
+    playList: Boolean
+  },
+  computed: mapState(["playListFiles", "currentPlayListFile"]),
   methods: {
     customRow(record) {
       const that = this;
       return {
         on: {
           contextmenu() {
-            // const { Menu, MenuItem } = require("electron");
             const { Menu, MenuItem } = that.$electron.remote;
             const menu = new Menu();
-            const playListMenu = new Menu();
 
-            that.selectedRowKeys.push(record.key);
+            //之前是否已选择
+            let isChangeIndex = that.selectedRowKeys.indexOf(record.key) == -1;
+            if (isChangeIndex) {
+              that.selectedRowKeys.push(record.key);
+              that.selectedRecords.push(record);
+            }
 
-            for (const i of that.playListFiles) {
-              playListMenu.append(
+            menu.append(
+              new MenuItem({
+                label: "从磁盘中删除",
+                click() {
+                  if (isChangeIndex) that.selectedRowKeys.push(record.key);
+                  that.$store.commit("deleteMusicFiles", that.selectedRowKeys);
+                  that.selectedRowKeys.splice(0, that.selectedRowKeys.length);
+                  that.selectedRecords.splice(0, that.selectedRecords.length);
+                }
+              })
+            );
+
+            //父组件是否是播放列表菜单查看器
+            if (!that.playList) {
+              const playListMenu = new Menu();
+
+              // 生成播放列表子菜单
+              for (const i of that.playListFiles) {
+                playListMenu.append(
+                  new MenuItem({
+                    label: i.name,
+                    click() {
+                      if (isChangeIndex) that.selectedRecords.push(record);
+                      appendToPlayList(i.file, that.selectedRecords);
+                      that.selectedRowKeys.splice(
+                        0,
+                        that.selectedRowKeys.length
+                      );
+                      that.selectedRecords.splice(
+                        0,
+                        that.selectedRecords.length
+                      );
+                    }
+                  })
+                );
+              }
+
+              menu.append(
                 new MenuItem({
-                  label: i.name,
+                  label: "添加到播放列表",
+                  submenu: playListMenu
+                })
+              );
+            } else {
+              menu.append(
+                new MenuItem({
+                  label: "从播放列表中删除",
                   click() {
-                    const m3u8Write = require("m3u8-write");
-                    // TODO: 不能用m3u8-write库
-                    m3u8Write([{ EXTINF: `${record.length},${record.title}` }, record.key]);
+                    if (isChangeIndex) {
+                      that.selectedRecords.push(record);
+                      that.selectedRowKeys.push(record.key);
+                    }
+                    removeFromPlayList(
+                      that.currentPlayListFile,
+                      that.selectedRecords
+                    );
+                    that.$emit(
+                      "change",
+                      that.dataSource.filter(val => {
+                        return that.selectedRowKeys.indexOf(val.key) == -1;
+                      })
+                    );
+                    that.selectedRowKeys.splice(0, that.selectedRowKeys.length);
+                    that.selectedRecords.splice(0, that.selectedRecords.length);
                   }
                 })
               );
             }
 
-            menu.append(
-              new MenuItem({
-                label: "从本地磁盘中删除",
-                click() {
-                  that.selectedRowKeys.push(record.key);
-                  that.$store.commit("deleteFiles", that.selectedRowKeys);
-                  that.selectedRowKeys.splice(0, that.selectedRowKeys.length);
-                }
-              })
-            );
-            menu.append(
-              new MenuItem({
-                label: "添加到播放列表",
-                submenu: playListMenu
-              })
-            );
-
             menu.on("menu-will-close", () => {
-              that.selectedRowKeys.splice(
-                that.selectedRowKeys.indexOf(record.key),
-                1
-              );
+              if (isChangeIndex) {
+                that.selectedRowKeys.splice(
+                  that.selectedRowKeys.indexOf(record.key),
+                  1
+                );
+                that.selectedRecords.splice(
+                  that.selectedRecords.indexOf(record),
+                  1
+                );
+              }
             });
 
             menu.popup();
@@ -105,8 +162,9 @@ export default {
         }
       };
     },
-    onSelectChange(selectedRowKeys) {
+    onSelectChange(selectedRowKeys, selectedRecords) {
       this.selectedRowKeys = selectedRowKeys;
+      this.selectedRecords = selectedRecords;
     }
   }
 };
@@ -119,6 +177,7 @@ td {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  -webkit-user-select: text;
 }
 table {
   table-layout: fixed;

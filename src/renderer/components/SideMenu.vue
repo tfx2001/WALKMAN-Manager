@@ -31,7 +31,7 @@
         <a-menu-item
           v-else
           v-for="item in playListFiles"
-          :key="item.dir"
+          :key="item.file"
           @click="$emit('onPlayListItemClicked', $event.key)"
         >{{ item.name }}</a-menu-item>
       </a-sub-menu>
