@@ -10,7 +10,8 @@ import {
   Table,
   Dropdown,
   Modal,
-  Progress
+  Progress,
+  message
 } from 'ant-design-vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -30,6 +31,8 @@ Vue.use(Dropdown)
 Vue.use(Modal)
 Vue.use(Progress)
 Vue.use(Vuex)
+
+Vue.prototype.$message = message
 
 if (!process.env.IS_WEB)
   Vue.use(require('vue-electron'))

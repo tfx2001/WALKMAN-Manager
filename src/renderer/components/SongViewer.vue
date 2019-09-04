@@ -27,6 +27,9 @@
         </template>
       </a-table-column>
     </a-table>
+    <a-modal v-model="modalVisiable" title="请输入播放列表的名称">
+      <a-progress :percent="importPercent" status="active" />
+    </a-modal>
   </div>
 </template>
 
@@ -42,7 +45,8 @@ export default {
   data() {
     return {
       selectedRowKeys: [],
-      selectedRecords: []
+      selectedRecords: [],
+      modalVisiable: false
     };
   },
   model: {
@@ -76,6 +80,7 @@ export default {
                 click() {
                   if (isChangeIndex) that.selectedRowKeys.push(record.key);
                   that.$store.commit("deleteMusicFiles", that.selectedRowKeys);
+                  that.$message.success("成功从磁盘中删除");
                   that.selectedRowKeys.splice(0, that.selectedRowKeys.length);
                   that.selectedRecords.splice(0, that.selectedRecords.length);
                 }
@@ -83,37 +88,31 @@ export default {
             );
 
             //父组件是否是播放列表菜单查看器
-            if (!that.playList) {
-              const playListMenu = new Menu();
+            const playListMenu = new Menu();
 
-              // 生成播放列表子菜单
-              for (const i of that.playListFiles) {
-                playListMenu.append(
-                  new MenuItem({
-                    label: i.name,
-                    click() {
-                      if (isChangeIndex) that.selectedRecords.push(record);
-                      appendToPlayList(i.file, that.selectedRecords);
-                      that.selectedRowKeys.splice(
-                        0,
-                        that.selectedRowKeys.length
-                      );
-                      that.selectedRecords.splice(
-                        0,
-                        that.selectedRecords.length
-                      );
-                    }
-                  })
-                );
-              }
-
-              menu.append(
+            // 生成添加到播放列表子菜单
+            for (const i of that.playListFiles) {
+              playListMenu.append(
                 new MenuItem({
-                  label: "添加到播放列表",
-                  submenu: playListMenu
+                  label: i.name,
+                  click() {
+                    if (isChangeIndex) that.selectedRecords.push(record);
+                    appendToPlayList(i.file, that.selectedRecords);
+                    that.$message.success("成功添加到播放列表");
+                    that.selectedRowKeys.splice(0, that.selectedRowKeys.length);
+                    that.selectedRecords.splice(0, that.selectedRecords.length);
+                  }
                 })
               );
-            } else {
+            }
+
+            menu.append(
+              new MenuItem({
+                label: "添加到播放列表",
+                submenu: playListMenu
+              })
+            );
+            if (that.playList) {
               menu.append(
                 new MenuItem({
                   label: "从播放列表中删除",
@@ -126,6 +125,7 @@ export default {
                       that.currentPlayListFile,
                       that.selectedRecords
                     );
+                    that.$message.success("成功从播放列表中删除");
                     that.$emit(
                       "change",
                       that.dataSource.filter(val => {
