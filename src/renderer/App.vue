@@ -111,7 +111,7 @@ export default {
       this.currentComponent = comps[3];
     },
     onPlayListItemClicked(key) {
-      this.$store.commit("updateCurrentPlayListFile", key);
+      this.$store.commit("setCurrentPlayListFile", key);
       this.currentComponent = comps[4];
     },
     async onOpenFolderButtonClick() {
@@ -123,6 +123,7 @@ export default {
       });
 
       if (initDir) {
+        this.$store.commit("setOpenFolder", initDir[0]);
         this.modalVisiable = true;
         let { musicFiles, playListFiles } = recursiveSearchFiles(initDir[0]);
         let index = 0,
@@ -142,7 +143,7 @@ export default {
           this.importPercent = Math.ceil((index / totalImport) * 100);
         }
         this.$store.commit(
-          "updateMusicFiles",
+          "setMusicFiles",
           sortedMusicFiles.sort((a, b) => {
             if (a.title) {
               return a.title.localeCompare(b.title);
@@ -152,7 +153,7 @@ export default {
           })
         );
         this.$store.commit(
-          "updatePlayListFiles",
+          "setPlayListFiles",
           playListFiles.map(value => {
             return {
               name: path.basename(value, ".m3u8"),

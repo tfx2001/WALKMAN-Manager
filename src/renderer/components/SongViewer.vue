@@ -27,8 +27,8 @@
         </template>
       </a-table-column>
     </a-table>
-    <a-modal v-model="modalVisiable" title="请输入播放列表的名称">
-      <a-progress :percent="importPercent" status="active" />
+    <a-modal v-model="modalVisiable" title="新建播放列表" @ok="newPlayList">
+      <a-input placeholder="请输入播放列表名称" v-model="newPlayListName" />
     </a-modal>
   </div>
 </template>
@@ -39,6 +39,7 @@ import {
   appendToPlayList,
   removeFromPlayList
 } from "./SongViewer/PlayListEditor";
+import fs from "fs";
 
 export default {
   name: "SongViewer",
@@ -46,7 +47,8 @@ export default {
     return {
       selectedRowKeys: [],
       selectedRecords: [],
-      modalVisiable: false
+      modalVisiable: false,
+      newPlayListName: ""
     };
   },
   model: {
@@ -57,7 +59,7 @@ export default {
     dataSource: Array,
     playList: Boolean
   },
-  computed: mapState(["playListFiles", "currentPlayListFile"]),
+  computed: mapState(["playListFiles", "currentPlayListFile", "openFolder"]),
   methods: {
     customRow(record) {
       const that = this;
@@ -91,6 +93,27 @@ export default {
             const playListMenu = new Menu();
 
             // 生成添加到播放列表子菜单
+
+            playListMenu.append(
+              new MenuItem({
+                label: "新建播放列表",
+                click() {
+                  if (isChangeIndex) {
+                    that.selectedRecords.push(record);
+                    that.selectedRowKeys.push(record.key);
+                  }
+                  that.newPlayListName = "";
+                  that.modalVisiable = true;
+                }
+              })
+            );
+
+            playListMenu.append(
+              new MenuItem({
+                type: "separator"
+              })
+            );
+
             for (const i of that.playListFiles) {
               playListMenu.append(
                 new MenuItem({
@@ -165,6 +188,36 @@ export default {
     onSelectChange(selectedRowKeys, selectedRecords) {
       this.selectedRowKeys = selectedRowKeys;
       this.selectedRecords = selectedRecords;
+    },
+    newPlayList() {
+      for (const val of this.playListFiles) {
+        if (val.name == this.newPlayListName) {
+          this.$message.error("播放列表已存在");
+          return;
+        }
+      }
+      fs.writeFileSync(
+        this.openFolder + `MUSIC\\${this.newPlayListName}.m3u8`,
+        "#EXTM3U"
+      );
+      this.$store.commit("appendPlayListFiles", {
+        name: this.newPlayListName,
+        file: this.openFolder + `MUSIC\\${this.newPlayListName}.m3u8`
+      });
+      appendToPlayList(
+        this.openFolder + `MUSIC\\${this.newPlayListName}.m3u8`,
+        this.selectedRecords
+      );
+      this.modalVisiable = false;
+      this.$message.success("成功新建播放列表");
+    }
+  },
+  watch: {
+    modalVisiable(newVal) {
+      if (!newVal) {
+        this.selectedRowKeys.splice(0, this.selectedRowKeys.length);
+        this.selectedRecords.splice(0, this.selectedRecords.length);
+      }
     }
   }
 };

@@ -11,7 +11,8 @@ import {
   Dropdown,
   Modal,
   Progress,
-  message
+  message,
+  Input
 } from 'ant-design-vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
@@ -30,6 +31,7 @@ Vue.use(Table)
 Vue.use(Dropdown)
 Vue.use(Modal)
 Vue.use(Progress)
+Vue.use(Input)
 Vue.use(Vuex)
 
 Vue.prototype.$message = message
@@ -42,10 +44,11 @@ const store = new Vuex.Store({
   state: {
     musicFiles: [],
     playListFiles: [],
-    currentPlayListFile: ""
+    currentPlayListFile: "",
+    openFolder: ""
   },
   mutations: {
-    updateMusicFiles(state, musicFiles) {
+    setMusicFiles(state, musicFiles) {
       state.musicFiles = musicFiles;
     },
     deleteMusicFiles(state, deleteKeys) {
@@ -53,11 +56,17 @@ const store = new Vuex.Store({
         return deleteKeys.indexOf(val.key) == -1;
       })
     },
-    updatePlayListFiles(state, playListFiles) {
+    setPlayListFiles(state, playListFiles) {
       state.playListFiles = playListFiles
     },
-    updateCurrentPlayListFile(state, currentPlayListFile) {
+    appendPlayListFiles(state, playListFile) {
+      state.playListFiles.push(playListFile)
+    },
+    setCurrentPlayListFile(state, currentPlayListFile) {
       state.currentPlayListFile = currentPlayListFile
+    },
+    setOpenFolder(state, currentOpenFolder) {
+      state.openFolder = currentOpenFolder
     }
   }
 })
