@@ -12,12 +12,15 @@ import {
   Modal,
   Progress,
   message,
-  Input
+  Input,
+  Slider
 } from 'ant-design-vue'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
 import App from './App'
+
+import fs from 'fs'
 
 Vue.use(Button)
 Vue.use(Col)
@@ -32,9 +35,11 @@ Vue.use(Dropdown)
 Vue.use(Modal)
 Vue.use(Progress)
 Vue.use(Input)
+Vue.use(Slider)
 Vue.use(Vuex)
 
 Vue.prototype.$message = message
+Vue.prototype.$confirm = Modal.confirm
 
 if (!process.env.IS_WEB)
   Vue.use(require('vue-electron'))
@@ -45,13 +50,17 @@ const store = new Vuex.Store({
     musicFiles: [],
     playListFiles: [],
     currentPlayListFile: "",
-    openFolder: ""
+    openFolder: "",
+    currentPlayMusic: ""
   },
   mutations: {
     setMusicFiles(state, musicFiles) {
       state.musicFiles = musicFiles;
     },
     deleteMusicFiles(state, deleteKeys) {
+      for (const key of deleteKeys) {
+        fs.unlinkSync(key)
+      }
       state.musicFiles = state.musicFiles.filter(val => {
         return deleteKeys.indexOf(val.key) == -1;
       })
@@ -67,6 +76,9 @@ const store = new Vuex.Store({
     },
     setOpenFolder(state, currentOpenFolder) {
       state.openFolder = currentOpenFolder
+    },
+    setCurrentPlayMusic(state, currentPlayMusic) {
+      state.currentPlayMusic = currentPlayMusic
     }
   }
 })

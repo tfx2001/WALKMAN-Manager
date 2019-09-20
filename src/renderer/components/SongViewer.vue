@@ -1,5 +1,5 @@
 <template>
-  <div :style="{background: 'white', padding: '24px'}">
+  <div :style="{background: 'white', padding: '24px 24px 48px 24px', overflowY: 'auto'}">
     <a-table
       :dataSource="dataSource"
       size="small"
@@ -65,6 +65,9 @@ export default {
       const that = this;
       return {
         on: {
+          dblclick() {
+            that.$store.commit("setCurrentPlayMusic", record);
+          },
           contextmenu() {
             const { Menu, MenuItem } = that.$electron.remote;
             const menu = new Menu();
@@ -81,10 +84,45 @@ export default {
                 label: "从磁盘中删除",
                 click() {
                   if (isChangeIndex) that.selectedRowKeys.push(record.key);
-                  that.$store.commit("deleteMusicFiles", that.selectedRowKeys);
-                  that.$message.success("成功从磁盘中删除");
-                  that.selectedRowKeys.splice(0, that.selectedRowKeys.length);
-                  that.selectedRecords.splice(0, that.selectedRecords.length);
+                  that.$confirm({
+                    title: "确定要删除这些歌曲吗？",
+                    content: that.$createElement(
+                      "ul",
+                      that.selectedRowKeys.map(val => {
+                        return that.$createElement("li", val);
+                      })
+                    ),
+                    okType: "danger",
+                    onOk() {
+                      try {
+                        that.$store.commit(
+                          "deleteMusicFiles",
+                          that.selectedRowKeys
+                        );
+                        that.$message.success("成功从磁盘中删除");
+                      } catch (error) {
+                        that.$message.error("删除失败");
+                      }
+                      that.selectedRowKeys.splice(
+                        0,
+                        that.selectedRowKeys.length
+                      );
+                      that.selectedRecords.splice(
+                        0,
+                        that.selectedRecords.length
+                      );
+                    },
+                    onCancel() {
+                      that.selectedRowKeys.splice(
+                        0,
+                        that.selectedRowKeys.length
+                      );
+                      that.selectedRecords.splice(
+                        0,
+                        that.selectedRecords.length
+                      );
+                    }
+                  });
                 }
               })
             );
@@ -232,7 +270,13 @@ td {
   text-overflow: ellipsis;
   -webkit-user-select: text;
 }
+table td span {
+  cursor: text;
+}
 table {
   table-layout: fixed;
+}
+tbody tr {
+  cursor: pointer;
 }
 </style>

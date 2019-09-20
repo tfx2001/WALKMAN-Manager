@@ -187,6 +187,11 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/howler@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.npm.taobao.org/@types/howler/download/@types/howler-2.1.1.tgz#b2ba53009cc8415da5bb01d625a734babba11435"
+  integrity sha1-srpTAJzIQV2luwHWJac0uruhFDU=
+
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.npm.taobao.org/@types/minimatch/download/@types/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -198,9 +203,9 @@
   integrity sha1-O1w6Jjk8GbQAhErEIr0PYxqU1p0=
 
 "@types/node@^10.12.18":
-  version "10.14.15"
-  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-10.14.15.tgz?cache=0&sync_timestamp=1565213600002&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-10.14.15.tgz#e8f7729b631be1b02ae130ff0b61f3e018000640"
-  integrity sha1-6Pdym2Mb4bAq4TD/C2Hz4BgABkA=
+  version "10.14.18"
+  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-10.14.18.tgz?cache=0&sync_timestamp=1568180598397&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-10.14.18.tgz#b7d45fc950e6ffd7edc685e890d13aa7b8535dce"
+  integrity sha1-t9RfyVDm/9ftxoXokNE6p7hTXc4=
 
 "@vue/component-compiler-utils@^3.0.0":
   version "3.0.0"
@@ -4385,6 +4390,11 @@ hosted-git-info@^2.1.4:
   version "2.8.4"
   resolved "https://registry.npm.taobao.org/hosted-git-info/download/hosted-git-info-2.8.4.tgz#44119abaf4bc64692a16ace34700fed9c03e2546"
   integrity sha1-RBGauvS8ZGkqFqzjRwD+2cA+JUY=
+
+howler@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npm.taobao.org/howler/download/howler-2.1.0.tgz#1834f663915a0ef245698d9baaeb9363ff505048"
+  integrity sha1-GDT2Y5FaDvJFaY2bquuTY/9QUEg=
 
 hpack.js@^2.1.6:
   version "2.1.6"

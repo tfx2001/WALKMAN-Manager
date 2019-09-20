@@ -2,9 +2,7 @@
   <a-locale-provider :locale="locale">
     <a-layout :style="{top: 0, bottom: 0, left: 0, right: 0, position: 'fixed'}">
       <a-layout-sider
-        :style="{overflow: 'auto', marginBottom: '48px'}"
-        collapsible
-        defaultCollapsed
+        :style="{overflow: 'auto'}"
       >
         <side-menu
           :isOpenFoldered="true"
@@ -20,9 +18,12 @@
           <component
             :is="this.currentComponent"
             v-bind="currentProp"
-            :style="{height: '-webkit-fill-available'}"
+            style="height: -webkit-fill-available; padding-bottom: 48px;"
           ></component>
         </a-layout-content>
+        <a-layout-footer style="padding: 0; z-index: 100;">
+          <music-player></music-player>
+        </a-layout-footer>
       </a-layout>
       <a-modal
         v-model="modalVisiable"
@@ -46,6 +47,7 @@ import SongViewer from "./components/SongViewer.vue";
 import ArtistViewer from "./components/ArtistViewer.vue";
 import AlbumViewer from "./components/AlbumViewer.vue";
 import PlayListViewer from "./components/PlayListViewer.vue";
+import MusicPlayer from "./components/MusicPlayer.vue";
 import Tip from "./components/Tip.vue";
 import fs from "fs";
 import path from "path";
@@ -79,7 +81,7 @@ function recursiveSearchFiles(currentPath) {
 
 export default {
   name: "walkman-manager",
-  components: { SideMenu },
+  components: { SideMenu, MusicPlayer },
   data() {
     return {
       locale: zhCN,
